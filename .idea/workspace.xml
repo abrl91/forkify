@@ -7,6 +7,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
   <component name="ProjectId" id="1iKkoguiQa54jUxOOEM51rrygEy" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -27,7 +34,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1601663847576</updated>
-      <workItem from="1601663848650" duration="8527000" />
+      <workItem from="1601663848650" duration="12870000" />
     </task>
     <servers />
   </component>
@@ -35,10 +42,10 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="-1413" y="190" width="1078" height="608" key="find.popup" timestamp="1601665134556">
+    <state x="-1413" y="190" width="1078" height="608" key="find.popup" timestamp="1601730572717">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="-1413" y="190" width="1078" height="608" key="find.popup/-3840.0.1920.1080/-1920.0.1920.1080/0.0.1680.1050@-1920.0.1920.1080" timestamp="1601665134556" />
+    <state x="-1413" y="190" width="1078" height="608" key="find.popup/-3840.0.1920.1080/-1920.0.1920.1080/0.0.1680.1050@-1920.0.1920.1080" timestamp="1601730572717" />
     <state x="-1297" y="239" width="672" height="678" key="search.everywhere.popup" timestamp="1601721608013">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>

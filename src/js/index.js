@@ -1,7 +1,9 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
+import ShoppingList from './models/ShoppingList';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
+import * as shoppingListView from './views/shoppingListView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
 /** Global state of the app
@@ -86,7 +88,6 @@ const controlRecipe = async () => {
             // render recipe
             clearLoader();
             recipeView.renderRecipe(state.recipe);
-            console.log(state.recipe);
         } catch (error) {
             console.log(error, 'error processing recipe');
         }
@@ -103,12 +104,51 @@ elements.recipe.addEventListener('click', e => {
             state.recipe.updateServings('dec');
             recipeView.updateServingsIngredients(state.recipe);
        }
-   }
-
-    if (e.target.matches('.btn-increase, .btn-increase *')) {
+   } else if (e.target.matches('.btn-increase, .btn-increase *')) {
         state.recipe.updateServings('inc');
         recipeView.updateServingsIngredients(state.recipe);
-    }
-
-    console.log(state.recipe);
+    } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+       controlShoppingList();
+   }
 });
+
+// handle delete and update item events
+elements.shoppingList.addEventListener('click', e => {
+    const id = e.target.closest('.shopping__item').dataset.itemid;
+    // handle delete
+    if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+        // delete from state
+        state.shoppingList.deleteItem(id);
+
+        // delete from ui
+        shoppingListView.deleteItem(id);
+
+        // handle count
+    } else if (e.target.matches('.shopping__count--value')) {
+        // update state
+        const val = parseFloat(e.target.value);
+        state.shoppingList.updateCount(id, val);
+    }
+})
+
+
+/**
+ * shoppingList controller
+ */
+
+const controlShoppingList = () => {
+    // create a new list if there is no yet
+    if (!state.shoppingList) state.shoppingList = new ShoppingList();
+
+    // add each ingredient to the list and ui
+    state.recipe.ingredients.forEach(el => {
+        const item = state.shoppingList.addItem(el.count, el.unit, el.ingredient);
+        shoppingListView.renderItem(item);
+    });
+
+    // delete ingredient
+
+
+    // update ingredient
+
+}
