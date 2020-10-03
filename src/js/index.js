@@ -1,9 +1,11 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import ShoppingList from './models/ShoppingList';
+import Likes from './models/Likes';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as shoppingListView from './views/shoppingListView';
+import * as likesView from './views/likesView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
 /** Global state of the app
@@ -87,7 +89,7 @@ const controlRecipe = async () => {
 
             // render recipe
             clearLoader();
-            recipeView.renderRecipe(state.recipe);
+            recipeView.renderRecipe(state.recipe, state.likes?.isLiked(id));
         } catch (error) {
             console.log(error, 'error processing recipe');
         }
@@ -97,7 +99,7 @@ const controlRecipe = async () => {
 
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
-// handling recipe servings buttons click
+// handling recipe buttons click
 elements.recipe.addEventListener('click', e => {
    if (e.target.matches('.btn-decrease, .btn-decrease *')) {
        if (state.recipe.servings > 1) {
@@ -109,6 +111,8 @@ elements.recipe.addEventListener('click', e => {
         recipeView.updateServingsIngredients(state.recipe);
     } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
        controlShoppingList();
+   } else if (e.target.matches('.recipe__love, .recipe__love *')) {
+       controlLikes();
    }
 });
 
@@ -146,9 +150,51 @@ const controlShoppingList = () => {
         shoppingListView.renderItem(item);
     });
 
-    // delete ingredient
+}
 
 
-    // update ingredient
+/**
+ * likes controller
+ */
+
+const controlLikes = () => {
+    if (!state.likes) state.likes = new Likes();
+
+    const currentId = state.recipe.id
+    if (!state.likes.isLiked(currentId)) {
+        // add recipe to likes state
+        const newLike = state.likes.like(currentId, state.recipe.title, state.recipe.author, state.recipe.img);
+
+        // toggle btn
+        likesView.toggleLikeBtn(true);
+
+        // update ui
+        likesView.renderLikes(newLike);
+
+    } else {
+        // remove from likes state
+        state.likes.unlike(currentId);
+
+        // toggle btn
+        likesView.toggleLikeBtn(false);
+
+        // update ui
+        likesView.deleteLike(currentId);
+    }
+    likesView.toggleLikeMenu(state.likes.getNumOfLikes());
 
 }
+
+// Restore liked recipes on page load
+window.addEventListener('load', () => {
+    state.likes = new Likes();
+
+    // Restore likes
+    state.likes.readStorage();
+
+    // Toggle like menu button
+    likesView.toggleLikeMenu(state.likes.getNumOfLikes());
+
+    // Render the existing likes
+    state.likes.likes.forEach(like => likesView.renderLikes(like));
+});
